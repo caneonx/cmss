@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS Ecommerce Product Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="app-shell">
+      <div class="tabs">
+        <button class="tab-button active" data-tab="admin">Add Products</button>
+        <button class="tab-button" data-tab="store">Client View</button>
+      </div>
+
+      <section id="admin-tab" class="tab-panel active">
+        <div class="panel-card">
+          <div class="panel-header row-between wrap-gap">
+            <h2>Add a product</h2>
+            <button id="reset-form" type="button" class="ghost-button">Reset form</button>
+          </div>
+          <div class="panel-body">
+            <form id="product-form" class="form-stack">
+              <div class="grid two">
+                <div class="field">
+                  <label for="name">Product name</label>
+                  <input id="name" name="name" type="text" placeholder="Minimal Hoodie" readonly />
+                  <p class="hint">Double-click to edit this text field.</p>
+                </div>
+
+                <div class="field">
+                  <label for="category">Category template</label>
+                  <select id="category" name="category"></select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="tall" placeholder="Write the full product description here..." readonly></textarea>
+                <p class="hint">Double-click to edit this text field.</p>
+              </div>
+
+              <div class="grid five">
+                <div class="field">
+                  <label for="basePrice">Base price</label>
+                  <input id="basePrice" name="basePrice" type="number" step="0.01" min="0" placeholder="79.99" />
+                </div>
+
+                <div class="field">
+                  <label for="stock">Stock remaining</label>
+                  <input id="stock" name="stock" type="number" step="1" min="0" placeholder="40" />
+                  <p class="hint">Examples: 5, 40, 300</p>
+                </div>
+
+                <div class="field">
+                  <label for="deliveryTimeExpectation">Delivery time expectation</label>
+                  <input id="deliveryTimeExpectation" name="deliveryTimeExpectation" type="text" placeholder="5 to 10 days" />
+                </div>
+
+                <div class="mini-card">
+                  <label>Product visibility</label>
+                  <button id="visibility-toggle" type="button" class="action-button full-width"></button>
+                  <p class="hint">Use this to decide whether the product should be online or not.</p>
+                </div>
+
+                <div class="mini-card">
+                  <div class="inline-check">
+                    <input id="deliveryEnabled" name="deliveryEnabled" type="checkbox" />
+                    <label for="deliveryEnabled">Add delivery fee</label>
+                  </div>
+                  <div id="delivery-fee-wrap" class="field nested hidden">
+                    <label for="deliveryFee">Delivery fee</label>
+                    <input id="deliveryFee" name="deliveryFee" type="number" step="0.01" min="0" placeholder="4.99" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="inline-check">
+                  <input id="specialEventEnabled" name="specialEventEnabled" type="checkbox" />
+                  <label for="specialEventEnabled">Apply special event discount</label>
+                </div>
+                <div id="special-event-wrap" class="grid three hidden top-gap">
+                  <div class="field">
+                    <label for="specialEventName">Event name</label>
+                    <input id="specialEventName" name="specialEventName" type="text" placeholder="Black Friday" />
+                  </div>
+                  <div class="field">
+                    <label for="discountType">Discount type</label>
+                    <select id="discountType" name="discountType">
+                      <option value="percent">Percent</option>
+                      <option value="fixed">Fixed amount</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="discountValue">Discount value</label>
+                    <input id="discountValue" name="discountValue" type="number" step="0.01" min="0" placeholder="20" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="row-between wrap-gap">
+                  <div>
+                    <h3>Product pictures</h3>
+                    <p class="subtle">Add as many picture fields as you need</p>
+                  </div>
+                  <button id="add-picture-field" type="button" class="ghost-button">Add picture field</button>
+                </div>
+                <div id="pictures-list" class="stack-sm"></div>
+              </div>
+
+              <div class="mini-card">
+                <div>
+                  <h3>Category detail template</h3>
+                  <p class="subtle">The detail boilerplate changes automatically depending on the selected category.</p>
+                </div>
+                <div class="grid three">
+                  <div class="field">
+                    <label id="detail1-label" for="detail1"></label>
+                    <input id="detail1" name="detail1" type="text" />
+                  </div>
+                  <div class="field">
+                    <label id="detail2-label" for="detail2"></label>
+                    <input id="detail2" name="detail2" type="text" />
+                  </div>
+                  <div class="field">
+                    <label id="detail3-label" for="detail3"></label>
+                    <input id="detail3" name="detail3" type="text" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row-gap wrap-gap">
+                <button type="submit" class="primary-button submit-button">Save product to JSON store</button>
+                <button id="import-from-admin" type="button" class="ghost-button"><span class="icon">⤴</span> Import product bundle JSON</button>
+                <input id="json-file-input" type="file" accept="application/json" class="hidden-input" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="store-tab" class="tab-panel">
+        <div class="store-stack">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <p class="stat-label">Products</p>
+              <p id="products-count" class="stat-value">0</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Total Stock Units</p>
+              <p id="total-stock" class="stat-value">0</p>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="store-header">
+              <div>
+                <h2>Client store preview</h2>
+                <p class="subtle">Clicking a product image or title opens its product landing page with description, optional details, and remaining stock.</p>
+              </div>
+              <div class="search-wrap">
+                <input id="search" type="text" placeholder="Search product, category, description..." />
+              </div>
+            </div>
+
+            <div class="toolbar-row wrap-gap">
+              <button id="toggle-select-visible" type="button" class="ghost-button compact" aria-label="Select all visible products">
+                <span id="select-visible-icon" class="checkbox-icon"></span>
+              </button>
+              <button id="export-selected" type="button" class="ghost-button"><span class="icon">⬇</span> Export selected JSON (<span id="selected-count">0</span>)</button>
+              <button id="toggle-import-panel" type="button" class="ghost-button"><span class="icon">⤴</span> <span id="toggle-import-panel-label">Import bundle JSON</span></button>
+            </div>
+
+            <div id="import-panel" class="import-panel hidden">
+              <label for="import-text">Import product bundle JSON</label>
+              <textarea id="import-text" class="tall medium" placeholder='Paste one product JSON object or an array of products using the same structure, including image links.'></textarea>
+              <div class="row-gap wrap-gap">
+                <button id="import-now" type="button" class="primary-button">Import now</button>
+                <button id="upload-json" type="button" class="ghost-button">Upload JSON file</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="products-grid" class="products-grid"></div>
+          <div id="empty-state" class="panel-card hidden">
+            <div class="empty-state">No products match your search.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="modal-backdrop" class="modal-backdrop hidden">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button id="modal-close" class="modal-close" type="button">×</button>
+      <div class="modal-head">
+        <div id="modal-name-wrap"></div>
+        <p class="subtle">Product landing page opened from image or title. Double-click name or description to edit.</p>
+      </div>
+      <div class="modal-grid">
+        <div class="modal-left">
+          <img id="modal-main-image" class="modal-main-image" alt="Product image" />
+          <div id="modal-thumbs" class="thumb-grid"></div>
+        </div>
+        <div class="modal-right">
+          <div id="modal-badges" class="badge-row"></div>
+          <div id="modal-description-wrap"></div>
+          <div class="info-card" id="modal-pricing"></div>
+          <div class="info-card">
+            <h3>Optional details</h3>
+            <div id="modal-details"></div>
+            <div class="choice-snapshot" id="choice-snapshot"></div>
+          </div>
+          <button type="button" class="primary-button full-width"><span class="icon">◉</span> Simulate add to cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
